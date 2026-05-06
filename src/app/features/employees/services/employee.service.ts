@@ -1,5 +1,5 @@
 import { inject, Injectable  } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EmployeeDTO } from '../models/employee.dto';
 import { environment } from '../../../../environments/environment';
@@ -11,6 +11,12 @@ import { environment } from '../../../../environments/environment';
   providedIn: 'root',
 })
 export class EmployeeService {
+
+   private readonly headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      });
+
   private http = inject(HttpClient);
   private url = environment.apiEmployeeUrl;
 
@@ -19,7 +25,7 @@ export class EmployeeService {
    * @returns Observable of an array of EmployeeDTO.
    */
   getAll() { 
-    return this.http.get<EmployeeDTO[]>(this.url); 
+    return this.http.get<EmployeeDTO[]>(this.url, { headers: this.headers }); 
   }
   
   /**
@@ -28,7 +34,7 @@ export class EmployeeService {
    * @returns Observable of EmployeeDTO.
    */
   getById(id: number) { 
-    return this.http.get<EmployeeDTO>(`${this.url}/${id}`); 
+    return this.http.get<EmployeeDTO>(`${this.url}/${id}`, { headers: this.headers }); 
   }
   
   /**
@@ -37,7 +43,7 @@ export class EmployeeService {
    * @returns Observable of the created EmployeeDTO.
    */
   save(e: EmployeeDTO) { 
-    return this.http.post<EmployeeDTO>(this.url, e); 
+    return this.http.post<EmployeeDTO>(this.url, e, { headers: this.headers }); 
   }
   
   /**
@@ -46,7 +52,7 @@ export class EmployeeService {
    * @returns Observable of void.
    */
   delete(id: number) { 
-    return this.http.delete(`${this.url}/${id}`); 
+    return this.http.delete(`${this.url}/${id}`, { headers: this.headers }); 
   }
 
   /**
@@ -56,7 +62,7 @@ export class EmployeeService {
    * @returns Observable of the updated EmployeeDTO.
    */
   update(id: number, employee: EmployeeDTO): Observable<EmployeeDTO> {
-    return this.http.put<EmployeeDTO>(`${this.url}/${id}`, employee);
+    return this.http.put<EmployeeDTO>(`${this.url}/${id}`, employee, { headers: this.headers });
   }
 
 }
