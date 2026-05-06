@@ -20,8 +20,6 @@ To start a local development server, run:
 ng build --configuration production
 ```
 
-
-
 ## Code scaffolding
 
 Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
