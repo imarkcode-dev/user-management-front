@@ -2,18 +2,28 @@ import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LoginRequest, AuthResponse } from '../../../features/auth/models/auth.dto';
 import { tap } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 
+/**
+ * Service for managing user authentication.
+ * Handles login, logout, and token management.
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
 
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:8181/api/v1/auth';
+  private apiUrl = environment.apiAuthUrl;
   isAuthenticated = signal<boolean>(!!localStorage.getItem('token'));
- 
 
+  /**
+   * Authenticates a user with the provided credentials.
+   * Stores the token in localStorage and updates authentication state on success.
+   * @param credentials - The login credentials (username and password)
+   * @returns Observable with the authentication response
+   */
   login(credentials: LoginRequest) {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials)
       .pipe(
@@ -26,11 +36,19 @@ export class AuthService {
 
   }
 
+  /**
+   * Logs out the current user.
+   * Removes the token from localStorage and updates authentication state.
+   */
   logout() {
     localStorage.removeItem('token');
     this.isAuthenticated.set(false);
   }
 
+  /**
+   * Retrieves the stored authentication token.
+   * @returns The token string or null if no token is stored
+   */
   getToken() { return localStorage.getItem('token'); }
 
 }

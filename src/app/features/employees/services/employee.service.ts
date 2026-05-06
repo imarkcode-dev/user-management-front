@@ -2,6 +2,7 @@ import { inject, Injectable  } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EmployeeDTO } from '../models/employee.dto';
+import { environment } from '../../../../environments/environment';
 
 /**
  * Service for performing CRUD operations on employee data via HTTP requests.
@@ -11,7 +12,7 @@ import { EmployeeDTO } from '../models/employee.dto';
 })
 export class EmployeeService {
   private http = inject(HttpClient);
-  private url = 'http://localhost:8181/api/v1/employees';
+  private url = environment.apiEmployeeUrl;
 
   /**
    * Retrieves all employees from the API.
